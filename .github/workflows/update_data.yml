@@ -1,0 +1,36 @@
+name: Update Data Manifest
+on:
+  push:
+    paths:
+      - 'data/**'
+    branches:
+      - main
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate Manifest
+        run: |
+          echo "{" > data/manifest.json
+          echo "  \"price\": [" >> data/manifest.json
+          # data/price 폴더 내 .xlsx 파일 목록 추출
+          find data/price -name "*.xlsx" -o -name "*.xls" | sed 's/data\/price\///' | awk '{print "    \"" $0 "\""}' | paste -sd "," - >> data/manifest.json
+          echo "  ]," >> data/manifest.json
+          echo "  \"csv\": [" >> data/manifest.json
+          # data/csv 폴더 내 .csv 파일 목록 추출
+          find data/csv -name "*.csv" | sed 's/data\/csv\///' | awk '{print "    \"" $0 "\""}' | paste -sd "," - >> data/manifest.json
+          echo "  ]" >> data/manifest.json
+          echo "}" >> data/manifest.json
+          
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/manifest.json
+          git commit -m "chore: update data manifest" || exit 0
+          git push
