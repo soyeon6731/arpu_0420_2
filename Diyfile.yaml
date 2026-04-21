@@ -1,16 +1,18 @@
-# IDCube/Playground 배포용 설정 파일
+# IDCube/Playground 배포용 설정 파일 (수정본)
 version: "1.0"
 kind: StaticSite
 metadata:
   name: arpu-analysis-dashboard
 spec:
+  # 오류 해결을 위해 추가된 필수 항목
+  service_type: "web"
   # 웹 서비스의 시작점 설정
   index: "index.html"
   # 정적 파일들이 위치한 경로 (현재 루트)
   root: "./"
   # 서비스 포트 (일반적인 웹 포트)
   port: 80
-  # 필요한 경우 환경 변수 설정 (현재는 불필요)
+  # 필요한 경우 환경 변수 설정
   env:
     - name: NODE_ENV
       value: "production"
