@@ -1,11 +1,10 @@
-# IDCube/Playground 배포용 설정 파일 (수정본)
+# IDCube/Playground 배포용 설정 파일 (필수항목 상단 배치)
 version: "1.0"
+service_type: "web"
 kind: StaticSite
 metadata:
   name: arpu-analysis-dashboard
 spec:
-  # 오류 해결을 위해 추가된 필수 항목
-  service_type: "web"
   # 웹 서비스의 시작점 설정
   index: "index.html"
   # 정적 파일들이 위치한 경로 (현재 루트)
